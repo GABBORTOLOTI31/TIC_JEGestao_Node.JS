@@ -1,0 +1,240 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ----------------------------------------------------
+// ENUMS
+// ----------------------------------------------------
+enum Perfil {
+  ADMIN
+  TECNICO
+  ATENDENTE
+}
+
+enum StatusOS {
+  ABERTA
+  EM_ANDAMENTO
+  PAUSADA
+  CONCLUIDA
+  CANCELADA
+}
+
+enum StatusAgendamento {
+  PENDENTE
+  CONFIRMADO
+  CANCELADO
+  CONCLUIDO
+}
+
+enum StatusSolicitacao {
+  PENDENTE
+  EM_ANALISE
+  APROVADO
+  RECUSADO
+  CONVERTIDO
+}
+
+// ----------------------------------------------------
+// MODELS BASE
+// ----------------------------------------------------
+model Pessoa {
+  id       BigInt   @id @default(autoincrement())
+  nome     String
+  cpf      String   @unique @db.VarChar(14)
+  telefone String   @db.VarChar(20)
+  email    String   @unique
+
+  cliente Cliente?
+  tecnico Tecnico?
+
+  @@map("pessoas")
+}
+
+model Cliente {
+  id           BigInt   @id
+  dataCadastro DateTime @map("data_cadastro") @db.Date
+  endereco     String
+
+  pessoa       Pessoa   @relation(fields: [id], references: [id], onDelete: Cascade)
+  
+  ordensServico OrdemDeServico[]
+  agendamentos  Agendamento[]
+
+  @@map("clientes")
+}
+
+model Tecnico {
+  id            BigInt  @id
+  especialidade String
+  nrRegistro    String  @unique @map("nr_registro") @db.VarChar(20)
+  ativo         Boolean
+
+  pessoa        Pessoa  @relation(fields: [id], references: [id], onDelete: Cascade)
+  
+  ordensServico OrdemDeServico[]
+  agendamentos  Agendamento[]
+
+  @@map("tecnicos")
+}
+
+model Usuario {
+  id     BigInt @id @default(autoincrement())
+  email  String @unique
+  senha  String
+  nome   String
+  perfil Perfil
+
+  @@map("usuarios")
+}
+
+model Servico {
+  id              BigInt  @id @default(autoincrement())
+  nome            String
+  descricao       String? @db.Text
+  valorBase       Float   @map("valor_base")
+  duracaoEstimada Int     @map("duracao_estimada")
+  ativo           Boolean
+
+  agendamentos Agendamento[]
+
+  @@map("servicos")
+}
+
+model Equipamento {
+  id               BigInt @id @default(autoincrement())
+  modelo           String
+  marca            String
+  numeroSerie      String @unique @map("numero_serie")
+  problemaRelatado String @map("problema_relatado")
+
+  ordensServico OrdemDeServico[]
+
+  @@map("equipamentos")
+}
+
+model Material {
+  id            BigInt @id @default(autoincrement())
+  descricao     String
+  unidade       String @db.VarChar(10)
+  precoUnitario Float  @map("preco_unitario")
+
+  itensMaterial ItemMaterial[]
+
+  @@map("materiais")
+}
+
+model Contato {
+  id        BigInt   @id @default(autoincrement())
+  nome      String
+  telefone  String   @db.VarChar(20)
+  mensagem  String   @db.Text
+  dataEnvio DateTime @map("data_envio")
+
+  @@map("contatos")
+}
+
+model SolicitacaoServico {
+  id          BigInt            @id @default(autoincrement())
+  nome        String
+  telefone    String            @db.VarChar(20)
+  endereco    String
+  tipoServico String            @map("tipo_servico")
+  observacoes String?           @db.Text
+  dataEnvio   DateTime          @map("data_envio")
+  status      StatusSolicitacao
+
+  @@map("solicitacoes_servico")
+}
+
+model Orcamento {
+  id          BigInt            @id @default(autoincrement())
+  nome        String
+  telefone    String            @db.VarChar(20)
+  email       String
+  tipoServico String            @map("tipo_servico")
+  descricao   String?           @db.Text
+  dataEnvio   DateTime          @map("data_envio")
+  status      StatusSolicitacao
+
+  @@map("orcamentos")
+}
+
+model Agendamento {
+  id              BigInt            @id @default(autoincrement())
+  dataHoraMarcada DateTime          @map("data_hora_marcada")
+  observacoes     String?           @db.Text
+  status          StatusAgendamento
+
+  cliente_id BigInt
+  cliente    Cliente @relation(fields: [cliente_id], references: [id])
+
+  tecnico_id BigInt
+  tecnico    Tecnico @relation(fields: [tecnico_id], references: [id])
+
+  servico_id BigInt
+  servico    Servico @relation(fields: [servico_id], references: [id])
+
+  ordemDeServico OrdemDeServico?
+
+  @@map("agendamentos")
+}
+
+model OrdemDeServico {
+  id                 BigInt    @id @default(autoincrement())
+  dataAbertura       DateTime  @map("data_abertura")
+  dataConclusao      DateTime? @map("data_conclusao")
+  status             StatusOS
+  diagnosticoTecnico String?   @map("diagnostico_tecnico") @db.Text
+  valorMaoDeObra     Float     @map("valor_mao_de_obra")
+  valorTotal         Float     @map("valor_total")
+
+  cliente_id BigInt
+  cliente    Cliente @relation(fields: [cliente_id], references: [id])
+
+  tecnico_id BigInt
+  tecnico    Tecnico @relation(fields: [tecnico_id], references: [id])
+
+  equipamento_id BigInt
+  equipamento    Equipamento @relation(fields: [equipamento_id], references: [id])
+
+  agendamento_id BigInt?      @unique
+  agendamento    Agendamento? @relation(fields: [agendamento_id], references: [id])
+
+  itensMaterial ItemMaterial[]
+  checklist     Checklist?
+
+  @@map("ordens_servico")
+}
+
+model ItemMaterial {
+  id                   BigInt @id @default(autoincrement())
+  quantidade           Float // Java usa Double
+  precoUnitarioCobrado Float  @map("preco_unitario_cobrado") // Java mapeia direto
+
+  ordem_servico_id BigInt
+  ordemDeServico   OrdemDeServico @relation(fields: [ordem_servico_id], references: [id], onDelete: Cascade)
+
+  material_id BigInt
+  material    Material @relation(fields: [material_id], references: [id])
+
+  @@map("os_materiais")
+}
+
+model Checklist {
+  id                  BigInt  @id @default(autoincrement())
+  pressaoOk           Boolean @map("pressao_ok")
+  temperaturaOk       Boolean @map("temperatura_ok")
+  limpezaOk           Boolean @map("limpeza_ok")
+  vazamentoVerificado Boolean @map("vazamento_verificado")
+  observacoesGerais   String? @map("observacoes_gerais") @db.Text
+
+  ordem_servico_id BigInt         @unique
+  ordemDeServico   OrdemDeServico @relation(fields: [ordem_servico_id], references: [id], onDelete: Cascade)
+
+  @@map("checklists")
+}
