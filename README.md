@@ -1,87 +1,47 @@
-# ❄️ TIC - Sistema de Gestão de Serviços de Ar-Condicionado
+# 🛠️ J.E. Gestão — Sistema de Gestão de Atendimento e Serviços de Ar Condicionado
 
-## 📖 Sobre o Projeto
+[![Node.js](https://img.shields.io/badge/Node.js-v18%2B-green.svg)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Framework-Express-lightgrey.svg)](https://expressjs.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-O sistema foi desenvolvido em Java com o objetivo de auxiliar empresas de manutenção e instalação de ar-condicionado no gerenciamento de clientes, técnicos, equipamentos, materiais e ordens de serviço.
-
-O projeto foi desenvolvido com foco na aplicação dos principais conceitos da Programação Orientada a Objetos (POO), proporcionando uma estrutura organizada, reutilizável e de fácil manutenção.
-
----
-
-## 🎯 Objetivo
-
-Automatizar o controle de atendimentos realizados por empresas de climatização, permitindo o cadastro e gerenciamento das informações relacionadas aos serviços prestados.
+O **J.E. Gestão** é uma solução completa desenvolvida para otimizar o fluxo de trabalho, controle operacional e gerenciamento de ordens de serviço (OS) em empresas prestadoras de serviços de **instalação, manutenção e higienização de sistemas de ar condicionado**.
 
 ---
 
-## ⚙️ Funcionalidades
+## 📌 Principais Funcionalidades
 
-### 👤 Gestão de Clientes
-- Cadastro de clientes
-- Consulta de informações dos clientes
-- Associação de clientes às ordens de serviço
-
-### 🔧 Gestão de Técnicos
-- Cadastro de técnicos
-- Registro de especialidades
-- Associação de técnicos aos atendimentos
-
-### ❄️ Gestão de Equipamentos
-- Cadastro de equipamentos de ar-condicionado
-- Registro de modelo e fabricante
-- Vinculação aos clientes
-
-### 📦 Gestão de Materiais
-- Cadastro de materiais utilizados
-- Controle de custos
-- Associação aos serviços realizados
-
-### 📋 Gestão de Ordens de Serviço
-- Abertura de ordens de serviço
-- Registro de descrição do problema
-- Controle de status do atendimento
-- Cálculo de custos do serviço
+- 📋 **Gestão de Ordens de Serviço (OS):** Emissão, acompanhamento de status, agendamento de visitas técnicas e histórico de intervenções.
+- 👤 **Cadastro de Clientes e Locais de Atendimento:** Registro de dados de clientes (CPF/CNPJ, endereço, contatos) e mapeamento dos ambientes equipados.
+- ❄️ **Controle de Equipamentos:** Cadastro e gerenciamento do acervo de condicionadores de ar (marca, modelo, capacidade em BTUs, tipo de gás refrigerante, histórico de manutenção).
+- 🧑‍🔧 **Gestão de Técnicos e Equipes:** Atribuição de chamados a profissionais responsáveis e controle de disponibilidade.
+- 📊 **Relatórios e Indicadores:** Monitoramento de atendimentos realizados, manutenção preventiva/corretiva e indicadores operacionais.
 
 ---
 
-## 🧠 Conceitos de POO Aplicados
+## 🛠️ Tecnologias Utilizadas
 
-### Encapsulamento
-Os atributos das classes são protegidos através de modificadores de acesso e manipulados por métodos getters e setters.
-
-### Herança
-As classes Cliente e Tecnico herdam características da classe Pessoa.
-
-### Polimorfismo
-Permite que objetos sejam tratados através de referências genéricas, aumentando a flexibilidade do sistema.
-
-### Abstração
-As classes representam entidades reais do contexto de manutenção de ar-condicionado.
-
-### Interfaces
-Utilização da interface `Calculavel` para padronização de cálculos relacionados aos serviços.
-
-### Coleções
-Uso de estruturas como `List` para armazenamento e gerenciamento de dados.
+- **Runtime Backend:** [Node.js](https://nodejs.org/)
+- **Framework Web:** [Express.js](https://expressjs.com/)
+- **Linguagem:** JavaScript (Node.js)
+- **Banco de Dados:** MySQL / PostgreSQL / MongoDB *(ajuste conforme o banco utilizado no projeto)*
+- **ORM / Query Builder:** Sequelize / Prisma / Knex.js *(ajuste conforme a lib utilizada)*
+- **Modelagem e Views:** HTML5, CSS3, EJS / Handlebars *(ou biblioteca frontend se aplicável)*
 
 ---
 
-## 🖥️ Tecnologias Utilizadas
+## 📁 Estrutura do Projeto
 
-- Java
-- Programação Orientada a Objetos (POO)
-  
----
-
-## Autores
-Gabriel Bortoloti - GABBORTOLOTI31
-João Victor da Silva - OJotaa
-Lucas Furco Righetto - lfurco
-
-Desenvolvido por alunos do curso de Ciência da Computação — UNI-Facef / Franca-SP
-Disciplina: Programação Orientada a Objetos  
-Ano: 2026
-
-## 📄 Licença
-
-Este projeto é destinado exclusivamente para fins educacionais.
+```text
+TIC_JEGestao_Node.JS/
+├── src/
+│   ├── config/         # Configurações de banco de dados e ambiente
+│   ├── controllers/    # Lógica de controle das requisições e rotas
+│   ├── models/         # Definição das entidades e schemas
+│   ├── routes/         # Definição das rotas e endpoints da aplicação
+│   ├── services/       # Regras de negócio e serviços internos
+│   ├── views/          # Templates e interfaces do usuário (se houver SSR)
+│   └── app.js          # Inicialização e middlewares do Express
+├── public/             # Arquivos estáticos (CSS, JS cliente, imagens)
+├── .env.example        # Modelo de variáveis de ambiente
+├── package.json        # Dependências e scripts do Node.js
+└── README.md           # Documentação do projeto
