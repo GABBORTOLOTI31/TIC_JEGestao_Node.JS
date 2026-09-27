@@ -1,8 +1,0 @@
-datasource db {
-  provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:5432/ordemservico_db"
-}
-
-generator client {
-  provider = "prisma-client-js"
-}
