@@ -45,3 +45,5 @@ TIC_JEGestao_Node.JS/
 ├── .env.example        # Modelo de variáveis de ambiente
 ├── package.json        # Dependências e scripts do Node.js
 └── README.md           # Documentação do projeto
+
+## teste
