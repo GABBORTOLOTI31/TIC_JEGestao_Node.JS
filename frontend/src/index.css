@@ -1,0 +1,170 @@
+/* ==========================================================================
+   JE Gestão - Estilos Customizados (Ajustes finos sobre o Bootstrap 5)
+   Cores e identidade visual extraídas do protótipo Google Stitch.
+   ========================================================================== */
+
+:root {
+  /* Cores da marca JE Ar-Condicionado */
+  --je-primary: #003298;
+  --je-primary-hover: #0D47C7;
+  --je-primary-light: #DCE1FF;
+  --je-bg: #FAF8FF;
+  --je-surface: #FFFFFF;
+  --je-text: #1A1B23;
+  --je-text-muted: #5D5F5F;
+  --je-border: #E2E1EC;
+
+  /* Sobrescrevendo variáveis nativas do Bootstrap 5 */
+  --bs-primary: #003298;
+  --bs-primary-rgb: 0, 50, 152;
+  --bs-body-bg: #FAF8FF;
+  --bs-body-color: #1A1B23;
+  --bs-body-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--je-bg);
+  color: var(--je-text);
+  font-family: var(--bs-body-font-family);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Configuração dos ícones do Google Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1;
+}
+
+.material-symbols-outlined.fill {
+  font-variation-settings: 'FILL' 1;
+}
+
+/* ==========================================================================
+   Layout com Sidebar Fixa (Desktop 260px)
+   Adaptação do protótipo Stitch utilizando Bootstrap
+   ========================================================================== */
+@media (min-width: 768px) {
+  .je-sidebar {
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--je-primary);
+    color: #FFFFFF;
+    z-index: 1020;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .je-main-content {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .je-sidebar {
+    display: none; /* No mobile, usaremos a barra de navegação responsiva */
+  }
+
+  .je-main-content {
+    margin-left: 0;
+  }
+}
+
+/* Links da Sidebar */
+.je-sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  margin: 2px 12px;
+  padding: 10px 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.je-sidebar .nav-link:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.je-sidebar .nav-link.active {
+  color: #FFFFFF;
+  background-color: var(--je-primary-hover);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilização suave para Cards */
+.card {
+  border-radius: 12px;
+  border: 1px solid var(--je-border);
+  background-color: var(--je-surface);
+}
+
+/* Indicadores / Cards de KPI no Dashboard */
+.kpi-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 50, 152, 0.08) !important;
+}
+
+/* Pílulas de Status (Badges) */
+.badge-status {
+  padding: 6px 12px;
+  border-radius: 50rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   Estilos de Impressão (@media print)
+   Gera relatório limpo em folha A4 ocultando elementos de navegação e botões
+   ========================================================================== */
+@media print {
+  /* Oculta barras de navegação, botões de ação e elementos utilitários */
+  .je-sidebar,
+  .navbar,
+  .d-print-none,
+  .btn,
+  button,
+  .alert-dismissible {
+    display: none !important;
+  }
+
+  /* Zera a margem esquerda da sidebar para ocupar 100% da folha */
+  .je-main-content {
+    margin-left: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  /* Fundo totalmente branco e texto em preto puro para economia e legibilidade */
+  body,
+  #root,
+  main,
+  .container-fluid {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+  }
+
+  /* Cards sem sombra e com borda sutil para impressão */
+  .card {
+    border: 1px solid #ced4da !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
