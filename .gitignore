@@ -2,3 +2,10 @@
 .idea/
 target/
 *.iml
+
+node_modules/
+dist/
+.env
+.env.local
+*.tsbuildinfo
+!.env.example
