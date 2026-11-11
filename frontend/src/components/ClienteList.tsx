@@ -132,8 +132,15 @@ export function ClienteList({ onLogout }: ClienteListProps) {
       if (!response.ok) {
         // Se o backend recusar (por exemplo, cliente vinculado a ordens de serviço ou agendamentos)
         const dadosErro = await response.json().catch(() => ({}));
+        const msgErro = dadosErro.error || '';
+
+        // Trata erro cru de Foreign Key / RESTRICT do Prisma/PostgreSQL com mensagem amigável
+        if (/foreign key|violates|RESTRICT/i.test(msgErro)) {
+          throw new Error('Não é possível excluir este cliente porque ele possui agendamentos ou ordens de serviço vinculados.');
+        }
+
         throw new Error(
-          dadosErro.error || `Não foi possível excluir o cliente (Status ${response.status}). Verifique se ele possui ordens de serviço vinculadas.`
+          msgErro || `Não foi possível excluir o cliente (Status ${response.status}). Verifique se ele possui ordens de serviço vinculadas.`
         );
       }
 

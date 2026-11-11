@@ -116,7 +116,14 @@ export function MaterialList({ onLogout }: MaterialListProps) {
 
       if (!response.ok) {
         const dadosErro = await response.json().catch(() => ({}));
-        throw new Error(dadosErro.error || `Não foi possível excluir o material. Ele pode estar vinculado a ordens de serviço existentes.`);
+        const msgErro = dadosErro.error || '';
+
+        // Trata erro cru de Foreign Key / RESTRICT do Prisma/PostgreSQL com mensagem amigável
+        if (/foreign key|violates|RESTRICT/i.test(msgErro)) {
+          throw new Error('Não é possível excluir este material porque ele já foi usado em ordens de serviço.');
+        }
+
+        throw new Error(msgErro || `Não foi possível excluir o material. Ele pode estar vinculado a ordens de serviço existentes.`);
       }
 
       // Atualiza a lista em memória sem recarregar a página
