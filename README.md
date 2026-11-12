@@ -59,7 +59,7 @@ O **J.E. Gestão** é uma solução desenvolvida para otimizar o fluxo de trabal
 
 ```text
 ./ (raiz do repositório)
-├── backend-node/                 # Aplicação Back-end (API REST Express)
+├── backend/                      # Aplicação Back-end (API REST Express)
 │   ├── prisma/
 │   │   └── schema.prisma         # Definições de modelos e relacionamentos do banco
 │   ├── src/
@@ -124,7 +124,7 @@ O **J.E. Gestão** é uma solução desenvolvida para otimizar o fluxo de trabal
 
 1. Navegue até o diretório do back-end:
    ```bash
-   cd backend-node
+   cd backend
    ```
 
 2. Instale as dependências:
